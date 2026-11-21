@@ -12,531 +12,84 @@
     href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
-
-  <style>
-    :root {
-      --pink: #ffb3cd;
-      --pink-deep: #ff7fa8;
-      --ink: #6b5560;
-      --shadow: 0 12px 30px rgba(255, 127, 168, 0.25);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow-x: hidden; }
-    body {
-      min-height: 100vh;
-      min-height: 100dvh;
-      padding: clamp(14px, 4vw, 28px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background:
-        radial-gradient(circle at 12% 12%, #fff0f6, transparent 42%),
-        radial-gradient(circle at 88% 85%, #eafaf3, transparent 42%),
-        linear-gradient(135deg, #fff1f7 0%, #ffe6f0 45%, #f3ecff 100%);
-      background-attachment: fixed;
-      font-family: "Quicksand", system-ui, -apple-system, sans-serif;
-      color: var(--ink);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    header { text-align: center; margin-bottom: 14px; }
-    header h1 {
-      font-family: "Dancing Script", cursive;
-      font-weight: 700;
-      font-size: clamp(2.1rem, 7.5vw, 3rem);
-      color: var(--pink-deep);
-      text-shadow: 2px 2px 0 #fff;
-    }
-    header p { font-size: 0.9rem; color: #a98a98; margin-top: 2px; }
-
-    .booth {
-      width: 100%;
-      max-width: 440px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 2px solid #fff;
-      border-radius: 28px;
-      padding: clamp(16px, 4vw, 24px);
-      box-shadow: var(--shadow);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-    }
-
-    .stage {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #ffeef5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 3px dashed #ffc6db;
-    }
-    #video { width: 100%; height: 100%; object-fit: cover; display: none; }
-    #video.mirror { transform: scaleX(-1); }
-
-    .stage__msg { text-align: center; padding: 20px; font-weight: 600; color: #c98aa5; }
-    .stage__msg .big { font-size: 2.4rem; display: block; margin-bottom: 8px; }
-
-    .countdown {
-      position: absolute; inset: 0; display: none;
-      align-items: center; justify-content: center;
-      font-family: "Baloo 2", cursive; font-size: 6rem; color: #fff;
-      text-shadow: 0 6px 18px rgba(255, 127, 168, 0.6);
-      background: rgba(255, 179, 205, 0.25);
-    }
-    .countdown.show { display: flex; }
-    .countdown span { animation: pop 0.9s ease; }
-    @keyframes pop {
-      0% { transform: scale(0.3); opacity: 0; }
-      40% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
-    .flash.go { animation: flash 0.4s ease; }
-    @keyframes flash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
-
-    .dots { display: flex; justify-content: center; gap: 8px; margin: 14px 0 4px; }
-    .dots i { width: 10px; height: 10px; border-radius: 50%; background: #ffd4e3; transition: all 0.3s ease; }
-    .dots i.done { background: var(--pink-deep); transform: scale(1.2); }
-
-    .section-label { font-weight: 700; font-size: 0.8rem; color: #b07189; margin: 14px 0 8px; text-align: center; letter-spacing: 0.3px; }
-
-    .filters, .themes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-    .chip {
-      font-family: "Quicksand", sans-serif; font-weight: 600; font-size: 0.82rem;
-      padding: 7px 14px; border-radius: 50px; cursor: pointer;
-      background: #fff; color: var(--ink); border: 2px solid #ffd9e6; transition: all 0.2s ease;
-    }
-    .chip.active { background: var(--pink); color: #fff; border-color: var(--pink); }
-    .theme-chip.active { background: var(--pink-deep); border-color: var(--pink-deep); color: #fff; }
-
-    .row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; margin-top: 12px; }
-    label.count { font-weight: 600; font-size: 0.85rem; color: var(--ink); display: flex; align-items: center; gap: 6px; }
-    select { font-family: inherit; font-weight: 600; padding: 6px 10px; border-radius: 12px; border: 2px solid #ffd9e6; background: #fff; color: var(--ink); }
-
-    .btn {
-      font-family: "Baloo 2", cursive; font-weight: 600; font-size: 1rem;
-      padding: 12px 26px; border: none; border-radius: 50px; cursor: pointer; color: #fff;
-      background: linear-gradient(45deg, var(--pink-deep), var(--pink));
-      box-shadow: var(--shadow); transition: transform 0.2s ease, filter 0.2s ease;
-      display: inline-flex; align-items: center; gap: 8px;
-    }
-    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
-    .btn.ghost { color: var(--pink-deep); background: #fff; border: 2px solid var(--pink); box-shadow: none; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .controls { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
-    .tiny { font-size: 0.78rem; color: #b093a0; text-align: center; }
-
-    .result { display: none; flex-direction: column; align-items: center; gap: 14px; }
-    .result.show { display: flex; }
-    #stripCanvas { max-width: 250px; width: 72%; height: auto; border-radius: 14px; box-shadow: var(--shadow); }
-    footer { margin-top: 18px; font-size: 0.78rem; color: #bda4b0; text-align: center; }
-    .heartbeat { display: inline-block; animation: beat 1s infinite alternate; }
-    @keyframes beat { to { transform: scale(1.2); } }
-  </style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div id="decor" aria-hidden="true"></div>
+
   <header>
-    <h1>♡ Dreamy Photobooth ♡</h1>
-    <p>jepret momen gemasmu di sini~</p>
+    <h1>Dreamy Photobooth</h1>
+    <p>jepret momen gemasmu, pilih tema, simpan ♡</p>
   </header>
 
-  <div class="booth">
-    <div id="camView">
-      <div class="stage">
-        <video id="video" autoplay playsinline muted></video>
-        <div class="stage__msg" id="stageMsg"><span class="big">📸</span>Izinkan kamera untuk mulai</div>
-        <div class="countdown" id="countdown"><span></span></div>
-        <div class="flash" id="flash"></div>
+  <div class="layout">
+    <!-- KOLOM KIRI: BOOTH -->
+    <div class="booth">
+      <div id="camView">
+        <div class="stage">
+          <video id="video" autoplay playsinline muted></video>
+          <div class="stage__msg" id="stageMsg"><span class="big">📸</span>Izinkan kamera untuk mulai</div>
+          <div class="countdown" id="countdown"><span></span></div>
+          <div class="flash" id="flash"></div>
+        </div>
+
+        <div class="dots" id="dots"></div>
+
+        <div class="label">✨ Filter Foto</div>
+        <div class="chip-row" id="filters"></div>
+
+        <div class="label">🎀 Tema Frame</div>
+        <div class="chip-row" id="themes"></div>
+
+        <div class="row">
+          <label class="count">Jumlah foto:
+            <select id="shotCount">
+              <option value="3" selected>3</option>
+              <option value="4">4</option>
+              <option value="2">2</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="controls">
+          <button class="btn full" id="startBtn">✦ Nyalakan Kamera</button>
+          <button class="btn full" id="snapBtn" style="display:none">✿ Mulai Jepret</button>
+          <button class="btn ghost" id="flipBtn" style="display:none">⟳ Balik Kamera</button>
+          <div class="tiny" id="hint">selamat mencoba~</div>
+        </div>
       </div>
 
-      <div class="dots" id="dots"></div>
-
-      <div class="section-label">✨ Filter Foto</div>
-      <div class="filters" id="filters"></div>
-
-      <div class="section-label">🎀 Tema Frame</div>
-      <div class="themes" id="themes"></div>
-
-      <div class="row">
-        <label class="count">Jumlah foto:
-          <select id="shotCount">
-            <option value="3" selected>3</option>
-            <option value="4">4</option>
-            <option value="2">2</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="controls">
-        <button class="btn" id="startBtn">✦ Nyalakan Kamera</button>
-        <button class="btn" id="snapBtn" style="display:none">✿ Mulai Jepret</button>
-        <button class="btn ghost" id="flipBtn" style="display:none">⟳ Balik Kamera</button>
-        <div class="tiny" id="hint">Selamat mencoba</div>
+      <div class="result" id="result">
+        <canvas id="stripCanvas"></canvas>
+        <div class="row">
+          <button class="btn" id="downloadBtn">⬇ Simpan Foto</button>
+          <button class="btn ghost" id="retakeBtn">↺ Jepret Lagi</button>
+        </div>
       </div>
     </div>
 
-    <div class="result" id="result">
-      <canvas id="stripCanvas"></canvas>
-      <div class="row">
-        <button class="btn" id="downloadBtn">⬇ Simpan Foto</button>
-        <button class="btn ghost" id="retakeBtn">↺ Jepret Lagi</button>
+    <!-- KOLOM KANAN: PANDUAN (muncul di layar lebar) -->
+    <aside class="aside">
+      <h2>Cara Pakai</h2>
+      <div class="step">
+        <div class="num">1</div>
+        <p>Klik <b>Nyalakan Kamera</b> dan izinkan akses kamera.</p>
       </div>
-    </div>
+      <div class="step">
+        <div class="num">2</div>
+        <p>Pilih <b>filter</b> dan <b>tema frame</b> favoritmu, lalu atur jumlah foto.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <p>Tekan <b>Mulai Jepret</b> — ada hitung mundur tiap foto. Lalu <b>simpan</b> stripnya!</p>
+      </div>
+      <p class="note">🔒 Semua foto diproses di perangkatmu, tidak diunggah ke mana pun.</p>
+    </aside>
   </div>
 
-  <footer>dibuat dengan <span class="heartbeat">💗</span> · foto tersimpan di perangkatmu, tidak diunggah ke mana pun</footer>
+  <footer>dibuat dengan <span class="heartbeat">💗</span> · foto tersimpan di perangkatmu</footer>
 
   <canvas id="work" style="display:none"></canvas>
-
-  <script>
-    "use strict";
-
-    // ---------------- Filter ----------------
-    const FILTERS = [
-      { id: "normal", name: "Asli",    css: "none", tint: null },
-      { id: "soft",   name: "Soft",    css: "saturate(1.1) brightness(1.08) contrast(0.96)", tint: "rgba(255,190,214,0.16)" },
-      { id: "dreamy", name: "Dreamy",  css: "brightness(1.12) contrast(0.9) saturate(1.1)", tint: "rgba(255,220,235,0.15)" },
-      { id: "rose",   name: "Rosé",    css: "saturate(1.15) brightness(1.05)", tint: "rgba(255,150,190,0.18)" },
-      { id: "peach",  name: "Peach",   css: "sepia(0.25) saturate(1.3) brightness(1.06)", tint: "rgba(255,190,150,0.14)" },
-      { id: "warm",   name: "Hangat",  css: "saturate(1.25) sepia(0.2) brightness(1.05)", tint: "rgba(255,210,170,0.12)" },
-      { id: "cool",   name: "Sejuk",   css: "saturate(1.1) hue-rotate(-12deg) brightness(1.05)", tint: "rgba(180,220,255,0.12)" },
-      { id: "mint",   name: "Mint",    css: "saturate(1.1) hue-rotate(15deg) brightness(1.05)", tint: "rgba(190,235,210,0.14)" },
-      { id: "fade",   name: "Fade",    css: "contrast(0.82) brightness(1.08) saturate(0.82)", tint: "rgba(255,245,235,0.12)" },
-      { id: "vivid",  name: "Vivid",   css: "saturate(1.55) contrast(1.12)", tint: null },
-      { id: "sepia",  name: "Vintage", css: "sepia(0.65) contrast(1.05) brightness(1.02)", tint: "rgba(255,225,190,0.12)" },
-      { id: "mono",   name: "Mono",    css: "grayscale(1) contrast(1.05)", tint: null },
-      { id: "noir",   name: "Noir",    css: "grayscale(1) contrast(1.28) brightness(0.95)", tint: null },
-    ];
-    let currentFilter = FILTERS[1];
-
-    // ---------------- Tema frame (kaya hiasan) ----------------
-    const THEMES = [
-      {
-        id: "strawberry", name: "🍓 Strawberry", title: "strawberry kiss",
-        bg: ["#ffe7f1", "#ffd0e4"], dot: "rgba(255,150,190,0.30)",
-        accent: "#ff5c92", photoBorder: "#ffb3cd", footer: "#ff6f9e",
-        stickers: ["🍓", "🌸", "💗", "🎀", "🍰"],
-      },
-      {
-        id: "sky", name: "☁️ Sky", title: "dreamy sky",
-        bg: ["#e6f1ff", "#d4e6ff"], dot: "rgba(130,180,255,0.25)",
-        accent: "#4f86d6", photoBorder: "#bcd8ff", footer: "#5b8fd6",
-        stickers: ["☁️", "⭐", "🌙", "💙", "🕊️"],
-      },
-      {
-        id: "matcha", name: "🍵 Matcha", title: "fresh matcha",
-        bg: ["#e9f7ee", "#d5efd9"], dot: "rgba(120,200,150,0.25)",
-        accent: "#4faa6d", photoBorder: "#bfe6c8", footer: "#5fa876",
-        stickers: ["🍃", "🌿", "⭐", "🍵", "💚"],
-      },
-      {
-        id: "bear", name: "🧸 Honey Bear", title: "honey bear",
-        bg: ["#fff3e2", "#ffe7cc"], dot: "rgba(230,180,120,0.28)",
-        accent: "#c68a4a", photoBorder: "#ffd9a8", footer: "#bd8a55",
-        stickers: ["🧸", "🍯", "🐾", "⭐", "🌻"],
-      },
-      {
-        id: "y2k", name: "✨ Y2K", title: "cyber cutie",
-        bg: ["#ffd1e8", "#c9b6f5", "#b6d8ff"], dot: "rgba(255,255,255,0.45)",
-        accent: "#8a5bd6", photoBorder: "#ffffff", footer: "#9a5bd6",
-        stickers: ["✨", "💿", "🦋", "💖", "🌟"],
-      },
-      {
-        id: "sakura", name: "🌸 Sakura", title: "sakura dream",
-        bg: ["#fff0f5", "#ffdce8"], dot: "rgba(255,170,200,0.28)",
-        accent: "#e86b96", photoBorder: "#ffc4d8", footer: "#e07090",
-        stickers: ["🌸", "🌷", "🦋", "💮", "🏵️"],
-      },
-      {
-        id: "galaxy", name: "🌙 Galaxy", title: "starry night",
-        bg: ["#3a2b63", "#5a4a8a", "#2d2450"], dot: "rgba(255,255,255,0.35)",
-        accent: "#e9dcff", photoBorder: "#c9b6f5", footer: "#8a6fc9",
-        stickers: ["🌙", "⭐", "✨", "🪐", "💫"],
-      },
-      {
-        id: "peachy", name: "🍑 Peachy", title: "peachy sunset",
-        bg: ["#ffe9d6", "#ffd0b0", "#ffb8d0"], dot: "rgba(255,170,120,0.26)",
-        accent: "#e8784f", photoBorder: "#ffc9a8", footer: "#e0824f",
-        stickers: ["🍑", "🌅", "🧡", "⭐", "🌻"],
-      },
-      {
-        id: "blueberry", name: "🫐 Blueberry", title: "blueberry pop",
-        bg: ["#e4e3ff", "#cdd4ff"], dot: "rgba(150,160,255,0.24)",
-        accent: "#6a66d6", photoBorder: "#c2c6ff", footer: "#7068d0",
-        stickers: ["🫐", "💜", "⭐", "🌀", "💙"],
-      },
-      {
-        id: "noir", name: "🖤 Noir", title: "mon chéri",
-        bg: ["#f4f1f2", "#e7e1e4"], dot: "rgba(70,60,66,0.14)",
-        accent: "#3a2f34", photoBorder: "#4a3f44", footer: "#5a4f54",
-        stickers: ["🖤", "✦", "♡", "✧", "☕"],
-      },
-    ];
-    let currentTheme = THEMES[0];
-
-    const $ = (id) => document.getElementById(id);
-    const video = $("video");
-    let stream = null;
-    let facing = "user";
-    let shots = [];
-    let busy = false;
-
-    // ---------------- UI ----------------
-    (function buildUI() {
-      const fWrap = $("filters");
-      FILTERS.forEach((f) => {
-        const c = document.createElement("div");
-        c.className = "chip" + (f.id === currentFilter.id ? " active" : "");
-        c.textContent = f.name;
-        c.onclick = () => {
-          currentFilter = f;
-          document.querySelectorAll("#filters .chip").forEach((x) => x.classList.remove("active"));
-          c.classList.add("active");
-          applyPreviewFilter();
-        };
-        fWrap.appendChild(c);
-      });
-
-      const tWrap = $("themes");
-      THEMES.forEach((t) => {
-        const c = document.createElement("div");
-        c.className = "chip theme-chip" + (t.id === currentTheme.id ? " active" : "");
-        c.textContent = t.name;
-        c.onclick = () => {
-          currentTheme = t;
-          document.querySelectorAll("#themes .chip").forEach((x) => x.classList.remove("active"));
-          c.classList.add("active");
-        };
-        tWrap.appendChild(c);
-      });
-    })();
-
-    function applyPreviewFilter() { video.style.filter = currentFilter.css; }
-
-    // ---------------- Kamera ----------------
-    async function startCamera() {
-      try {
-        if (stream) stream.getTracks().forEach((t) => t.stop());
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 960 } },
-          audio: false,
-        });
-        video.srcObject = stream;
-        video.style.display = "block";
-        video.classList.toggle("mirror", facing === "user");
-        $("stageMsg").style.display = "none";
-        applyPreviewFilter();
-        $("startBtn").style.display = "none";
-        $("snapBtn").style.display = "inline-flex";
-        $("flipBtn").style.display = "inline-flex";
-        $("hint").textContent = "Siap! Pilih filter & tema, lalu jepret ✿";
-      } catch (err) {
-        $("stageMsg").style.display = "block";
-        $("stageMsg").innerHTML =
-          '<span class="big">🥺</span>Kamera tidak bisa diakses.<br><small>' +
-          (err && err.name === "NotAllowedError"
-            ? "Izin kamera ditolak — aktifkan di pengaturan browser."
-            : "Pastikan buka lewat HTTPS/localhost & perangkat punya kamera.") + "</small>";
-      }
-    }
-
-    function buildDots(n) { const d = $("dots"); d.innerHTML = ""; for (let i = 0; i < n; i++) d.appendChild(document.createElement("i")); }
-    function markDot(i) { const dots = document.querySelectorAll("#dots i"); if (dots[i]) dots[i].classList.add("done"); }
-
-    function snapOnce() {
-      const w = video.videoWidth || 1280;
-      const h = video.videoHeight || 960;
-      const c = document.createElement("canvas");
-      c.width = w; c.height = h;
-      const ctx = c.getContext("2d");
-      if (facing === "user") { ctx.translate(w, 0); ctx.scale(-1, 1); }
-      ctx.filter = currentFilter.css === "none" ? "none" : currentFilter.css;
-      ctx.drawImage(video, 0, 0, w, h);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.filter = "none";
-      if (currentFilter.tint) { ctx.fillStyle = currentFilter.tint; ctx.fillRect(0, 0, w, h); }
-      return c;
-    }
-
-    function countdownOnce(n) {
-      return new Promise((resolve) => {
-        const el = $("countdown"); const span = el.querySelector("span");
-        el.classList.add("show"); let k = n; span.textContent = k;
-        span.style.animation = "none"; void span.offsetWidth; span.style.animation = "";
-        const timer = setInterval(() => {
-          k--;
-          if (k <= 0) { clearInterval(timer); el.classList.remove("show"); resolve(); }
-          else { span.textContent = k; span.style.animation = "none"; void span.offsetWidth; span.style.animation = ""; }
-        }, 1000);
-      });
-    }
-
-    async function startSequence() {
-      if (busy || !stream) return;
-      busy = true; $("snapBtn").disabled = true; $("flipBtn").disabled = true;
-      const total = parseInt($("shotCount").value, 10);
-      shots = []; buildDots(total);
-      for (let i = 0; i < total; i++) {
-        await countdownOnce(3);
-        const fl = $("flash"); fl.classList.remove("go"); void fl.offsetWidth; fl.classList.add("go");
-        shots.push(snapOnce()); markDot(i);
-        await new Promise((r) => setTimeout(r, 700));
-      }
-      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
-      composeStrip(shots);
-      busy = false; $("snapBtn").disabled = false; $("flipBtn").disabled = false;
-      showResult();
-    }
-
-    // ---------------- PRNG kecil (biar hiasan konsisten) ----------------
-    function mulberry32(a) {
-      return function () {
-        a |= 0; a = (a + 0x6D2B79F5) | 0;
-        let t = Math.imul(a ^ (a >>> 15), 1 | a);
-        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-      };
-    }
-
-    // ---------------- Susun strip ----------------
-    function composeStrip(sources) {
-      const n = sources.length;
-      const PW = 620, PH = Math.round(PW * 3 / 4);
-      const sidePad = 46, gap = 54, top = 150, bottom = 170;
-      const W = PW + sidePad * 2;
-      const H = top + n * PH + (n - 1) * gap + bottom;
-      const th = currentTheme;
-      const dark = th.id === "ink";
-
-      const c = $("stripCanvas");
-      c.width = W; c.height = H;
-      const ctx = c.getContext("2d");
-
-      // --- latar gradasi ---
-      const grad = ctx.createLinearGradient(0, 0, W, H);
-      th.bg.forEach((col, i) => grad.addColorStop(i / (th.bg.length - 1), col));
-      ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
-
-      // --- motif polkadot ---
-      ctx.fillStyle = th.dot;
-      for (let y = 30; y < H; y += 46) {
-        for (let x = (y % 92 === 0 ? 30 : 53); x < W; x += 46) {
-          ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-
-      // --- confetti stiker berserakan di seluruh latar (halus) ---
-      const rnd = mulberry32(99);
-      ctx.globalAlpha = 0.5;
-      for (let i = 0; i < 26; i++) {
-        const s = th.stickers[Math.floor(rnd() * th.stickers.length)];
-        const size = 20 + rnd() * 18;
-        const x = rnd() * W, y = top * 0.4 + rnd() * (H - top * 0.4);
-        ctx.font = size + "px serif"; ctx.textAlign = "center";
-        ctx.fillText(s, x, y);
-      }
-      ctx.globalAlpha = 1;
-
-      // --- border dalam putus-putus ---
-      ctx.strokeStyle = "rgba(255,255,255,0.9)";
-      ctx.lineWidth = 3; ctx.setLineDash([10, 9]);
-      roundRect(ctx, 16, 16, W - 32, H - 32, 22); ctx.stroke();
-      ctx.setLineDash([]);
-
-      // --- judul (tulisan sambung) ---
-      ctx.textAlign = "center";
-      ctx.fillStyle = th.accent;
-      ctx.font = "400 82px 'Great Vibes', cursive";
-      ctx.fillText(th.title, W / 2, 96);
-      ctx.font = "30px serif";
-      ctx.fillText(th.stickers[0] + "  ♡  " + th.stickers[1], W / 2, 132);
-
-      // --- foto-foto + hiasan di sela ---
-      sources.forEach((src, i) => {
-        const y = top + i * (PH + gap);
-
-        // kartu putih
-        ctx.save();
-        ctx.shadowColor = "rgba(0,0,0,0.14)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6;
-        roundRect(ctx, sidePad, y, PW, PH, 18); ctx.fillStyle = "#fff"; ctx.fill();
-        ctx.restore();
-
-        // border warna tema
-        ctx.save();
-        roundRect(ctx, sidePad + 4, y + 4, PW - 8, PH - 8, 15);
-        ctx.strokeStyle = th.photoBorder; ctx.lineWidth = 6; ctx.stroke();
-        // foto cover
-        roundRect(ctx, sidePad + 9, y + 9, PW - 18, PH - 18, 12); ctx.clip();
-        coverDraw(ctx, src, sidePad + 9, y + 9, PW - 18, PH - 18);
-        ctx.restore();
-
-        // stiker di pojok foto
-        ctx.font = "40px serif"; ctx.textAlign = "center";
-        rotatedSticker(ctx, th.stickers[(i + 1) % th.stickers.length], sidePad + PW - 18, y + 22, -0.25);
-        rotatedSticker(ctx, th.stickers[(i + 3) % th.stickers.length], sidePad + 22, y + PH - 16, 0.2);
-
-        // sela antar foto: deretan stiker kecil
-        if (i < n - 1) {
-          const gy = y + PH + gap / 2 + 6;
-          ctx.font = "30px serif";
-          const set = [th.stickers[i % th.stickers.length], "✧", th.stickers[(i + 2) % th.stickers.length]];
-          set.forEach((s, j) => ctx.fillText(s, W / 2 + (j - 1) * 54, gy));
-        }
-      });
-
-      // --- footer: pita tanggal + pesan ---
-      const d = new Date();
-      const tgl = d.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
-      const by = H - bottom + 54;
-      // pil tanggal
-      ctx.save();
-      ctx.shadowColor = "rgba(0,0,0,0.1)"; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
-      const pillW = 320, pillH = 56;
-      roundRect(ctx, (W - pillW) / 2, by - 40, pillW, pillH, 28);
-      ctx.fillStyle = "#fff"; ctx.fill(); ctx.restore();
-      ctx.fillStyle = th.footer; ctx.font = "700 30px 'Quicksand', sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("📅 " + tgl, W / 2, by - 2);
-      ctx.font = "700 46px 'Dancing Script', cursive"; ctx.fillStyle = th.accent;
-      ctx.fillText("sweet little moment " + th.stickers[0], W / 2, by + 60);
-    }
-
-    function rotatedSticker(ctx, s, x, y, rot) {
-      ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillText(s, 0, 0); ctx.restore();
-    }
-    function roundRect(ctx, x, y, w, h, r) {
-      ctx.beginPath(); ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
-    }
-    function coverDraw(ctx, src, dx, dy, dw, dh) {
-      const sw = src.width, sh = src.height;
-      const scale = Math.max(dw / sw, dh / sh);
-      const w = sw * scale, h = sh * scale;
-      ctx.drawImage(src, dx + (dw - w) / 2, dy + (dh - h) / 2, w, h);
-    }
-
-    function showResult() { $("camView").style.display = "none"; $("result").classList.add("show"); }
-    function showCam() { $("result").classList.remove("show"); $("camView").style.display = "block"; $("dots").innerHTML = ""; }
-
-    // ---------------- Tombol ----------------
-    $("startBtn").onclick = startCamera;
-    $("snapBtn").onclick = startSequence;
-    $("flipBtn").onclick = () => { facing = facing === "user" ? "environment" : "user"; startCamera(); };
-    $("retakeBtn").onclick = showCam;
-    $("downloadBtn").onclick = () => {
-      const a = document.createElement("a");
-      a.download = "photobooth-" + Date.now() + ".png";
-      a.href = $("stripCanvas").toDataURL("image/png"); a.click();
-    };
-
-    // hook pengujian
-    window.__composeStrip = composeStrip;
-    window.__setTheme = (i) => { currentTheme = THEMES[i]; };
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>

@@ -7,23 +7,38 @@
 // ---------------- Filter ----------------
 const FILTERS = [
   { id: "normal", name: "Asli",    css: "none", tint: null },
-  { id: "soft",   name: "Soft",    css: "brightness(1.12) contrast(0.9) saturate(1.2)", tint: "rgba(255,175,205,0.26)" },
-  { id: "dreamy", name: "Dreamy",  css: "brightness(1.22) contrast(0.8) saturate(1.25) blur(0.3px)", tint: "rgba(255,205,230,0.30)" },
-  { id: "rose",   name: "Rosé",    css: "saturate(1.35) brightness(1.05) contrast(1.05)", tint: "rgba(255,105,160,0.28)" },
-  { id: "blush",  name: "Blush",   css: "saturate(1.25) brightness(1.03) contrast(1.05)", tint: "rgba(255,80,140,0.30)" },
-  { id: "peach",  name: "Peach",   css: "sepia(0.4) saturate(1.6) brightness(1.08)", tint: "rgba(255,160,100,0.28)" },
-  { id: "golden", name: "Golden",  css: "sepia(0.65) saturate(1.5) brightness(1.1) contrast(1.05)", tint: "rgba(255,175,70,0.30)" },
-  { id: "warm",   name: "Hangat",  css: "sepia(0.35) saturate(1.5) brightness(1.06)", tint: "rgba(255,180,120,0.24)" },
-  { id: "candy",  name: "Candy",   css: "saturate(2) contrast(1.18) brightness(1.06)", tint: "rgba(255,120,195,0.22)" },
-  { id: "vivid",  name: "Vivid",   css: "saturate(2) contrast(1.25) brightness(1.02)", tint: null },
-  { id: "cool",   name: "Sejuk",   css: "saturate(1.25) hue-rotate(-25deg) brightness(1.05)", tint: "rgba(110,175,255,0.26)" },
-  { id: "frost",  name: "Frost",   css: "saturate(0.85) hue-rotate(-32deg) brightness(1.18) contrast(1.08)", tint: "rgba(165,205,255,0.32)" },
-  { id: "mint",   name: "Mint",    css: "saturate(1.35) hue-rotate(28deg) brightness(1.05)", tint: "rgba(130,230,185,0.28)" },
-  { id: "fade",   name: "Fade",    css: "contrast(0.7) brightness(1.14) saturate(0.68)", tint: "rgba(255,245,235,0.22)" },
-  { id: "film",   name: "Film",    css: "sepia(0.55) contrast(1.22) brightness(0.95) saturate(1)", tint: "rgba(230,215,180,0.24)" },
-  { id: "sepia",  name: "Vintage", css: "sepia(0.95) contrast(1.15) brightness(1.02)", tint: "rgba(255,210,150,0.22)" },
-  { id: "mono",   name: "Mono",    css: "grayscale(1) contrast(1.15)", tint: null },
-  { id: "noir",   name: "Noir",    css: "grayscale(1) contrast(1.55) brightness(0.88)", tint: null },
+  // pastel bersih, pink lembut, kontras normal
+  { id: "soft",   name: "Soft",    css: "brightness(1.08) contrast(1.0) saturate(1.12)", tint: "rgba(255,200,215,0.16)" },
+  // berkabut & melamun: blur + kontras rendah + semburat ungu
+  { id: "dreamy", name: "Dreamy",  css: "brightness(1.3) contrast(0.72) saturate(1.3) blur(1.1px)", tint: "rgba(220,190,255,0.32)" },
+  // rose hangat (kemerahan)
+  { id: "rose",   name: "Rosé",    css: "saturate(1.35) brightness(1.02) sepia(0.14)", tint: "rgba(255,95,120,0.26)" },
+  // bubblegum sejuk: terang, lembut, magenta muda
+  { id: "blush",  name: "Blush",   css: "brightness(1.14) contrast(0.9) saturate(1.2)", tint: "rgba(255,150,205,0.30)" },
+  // coral-oranye
+  { id: "peach",  name: "Peach",   css: "sepia(0.4) saturate(1.7) brightness(1.06)", tint: "rgba(255,140,80,0.28)" },
+  // emas golden-hour (kuning)
+  { id: "golden", name: "Golden",  css: "sepia(0.8) saturate(1.5) brightness(1.1) contrast(1.05)", tint: "rgba(255,180,40,0.32)" },
+  // pop permen: sangat pekat + pink
+  { id: "candy",  name: "Candy",   css: "saturate(2.1) contrast(1.15) brightness(1.08)", tint: "rgba(255,110,200,0.22)" },
+  // vivid netral tanpa semburat
+  { id: "vivid",  name: "Vivid",   css: "saturate(2) contrast(1.28) brightness(1.0)", tint: null },
+  // biru pekat
+  { id: "cool",   name: "Sejuk",   css: "saturate(1.4) hue-rotate(-20deg) brightness(1.02)", tint: "rgba(80,150,255,0.26)" },
+  // es: terang, pudar, cyan
+  { id: "frost",  name: "Frost",   css: "saturate(0.7) hue-rotate(-40deg) brightness(1.22) contrast(1.05)", tint: "rgba(150,210,255,0.30)" },
+  // hijau mint
+  { id: "mint",   name: "Mint",    css: "saturate(1.45) hue-rotate(35deg) brightness(1.04)", tint: "rgba(110,225,175,0.28)" },
+  // pudar matte
+  { id: "fade",   name: "Fade",    css: "contrast(0.68) brightness(1.16) saturate(0.6)", tint: "rgba(255,248,238,0.20)" },
+  // vintage hangat terang
+  { id: "sepia",  name: "Vintage", css: "sepia(0.95) saturate(1.2) brightness(1.05) contrast(1.02)", tint: "rgba(255,205,135,0.22)" },
+  // film moody: gelap, kehijauan, kontras
+  { id: "film",   name: "Film",    css: "sepia(0.4) hue-rotate(-12deg) contrast(1.3) brightness(0.9) saturate(0.95)", tint: "rgba(120,140,110,0.20)" },
+  // hitam-putih netral
+  { id: "mono",   name: "Mono",    css: "grayscale(1) contrast(1.12)", tint: null },
+  // noir dramatis
+  { id: "noir",   name: "Noir",    css: "grayscale(1) contrast(1.7) brightness(0.82)", tint: null },
 ];
 let currentFilter = FILTERS[1];
 
@@ -247,6 +262,18 @@ function composeStrip(sources) {
   th.bg.forEach((col, i) => grad.addColorStop(i / (th.bg.length - 1), col));
   ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
 
+  // --- kilau lembut di atas (depth) ---
+  const sheen = ctx.createLinearGradient(0, 0, 0, H * 0.4);
+  sheen.addColorStop(0, "rgba(255,255,255,0.18)");
+  sheen.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = sheen; ctx.fillRect(0, 0, W, H * 0.4);
+
+  // --- vignette halus di tepi (bingkai terasa) ---
+  const vig = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.72);
+  vig.addColorStop(0, "rgba(0,0,0,0)");
+  vig.addColorStop(1, dark ? "rgba(0,0,0,0.18)" : "rgba(120,80,100,0.08)");
+  ctx.fillStyle = vig; ctx.fillRect(0, 0, W, H);
+
   // --- motif polkadot halus ---
   ctx.fillStyle = th.dot;
   for (let y = 40; y < H; y += 52) {
@@ -272,17 +299,25 @@ function composeStrip(sources) {
   roundRect(ctx, 26, 26, W - 52, H - 52, 20); ctx.stroke();
   ctx.setLineDash([]);
 
-  // --- ornamen 4 sudut ---
-  ctx.font = "32px serif"; ctx.textAlign = "center";
-  ctx.fillText(cs[0], 54, 64); ctx.fillText(cs[1], W - 54, 64);
-  ctx.fillText(cs[2], 54, H - 40); ctx.fillText(cs[3], W - 54, H - 40);
+  // --- ornamen 4 sudut (stiker + aksen kecil) ---
+  ctx.textAlign = "center";
+  const corners = [[52, 66], [W - 52, 66], [52, H - 40], [W - 52, H - 40]];
+  corners.forEach((p, i) => {
+    ctx.font = "30px serif"; ctx.fillText(cs[i % cs.length], p[0], p[1]);
+    ctx.font = "16px serif"; ctx.fillStyle = dark ? "rgba(255,255,255,0.7)" : hexA(th.accent, 0.7);
+    ctx.fillText("✦", p[0] + (p[0] < W / 2 ? 24 : -24), p[1] - 14);
+  });
 
-  // --- judul (tulisan sambung) ---
+  // --- judul (tulisan sambung, dengan bayangan lembut) ---
+  ctx.save();
+  ctx.shadowColor = dark ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.9)";
+  ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
   ctx.fillStyle = th.accent;
-  ctx.font = "400 92px 'Great Vibes', cursive";
-  ctx.fillText(th.title, W / 2, 116);
+  ctx.font = "400 94px 'Great Vibes', cursive";
+  ctx.fillText(th.title, W / 2, 118);
+  ctx.restore();
   ctx.font = "30px serif"; ctx.fillStyle = dark ? "#fff" : th.footer;
-  ctx.fillText(cs[0] + "  ♡  " + cs[1], W / 2, 158);
+  ctx.fillText(cs[0] + "  ♡  " + cs[1], W / 2, 160);
 
   // --- foto-foto (grid) ---
   sources.forEach((src, i) => {

@@ -7,71 +7,71 @@
 // ---------------- Filter ----------------
 const FILTERS = [
   { id: "normal", name: "Asli",    css: "none", tint: null },
-  { id: "soft",   name: "Soft",    css: "saturate(1.1) brightness(1.08) contrast(0.96)", tint: "rgba(255,190,214,0.16)" },
-  { id: "dreamy", name: "Dreamy",  css: "brightness(1.12) contrast(0.9) saturate(1.1)", tint: "rgba(255,220,235,0.15)" },
-  { id: "rose",   name: "Rosé",    css: "saturate(1.15) brightness(1.05)", tint: "rgba(255,150,190,0.18)" },
-  { id: "blush",  name: "Blush",   css: "saturate(1.2) brightness(1.04)", tint: "rgba(255,130,175,0.20)" },
-  { id: "peach",  name: "Peach",   css: "sepia(0.25) saturate(1.3) brightness(1.06)", tint: "rgba(255,190,150,0.14)" },
-  { id: "golden", name: "Golden",  css: "sepia(0.4) saturate(1.3) brightness(1.08)", tint: "rgba(255,195,120,0.15)" },
-  { id: "warm",   name: "Hangat",  css: "saturate(1.25) sepia(0.2) brightness(1.05)", tint: "rgba(255,210,170,0.12)" },
-  { id: "candy",  name: "Candy",   css: "saturate(1.6) brightness(1.06) contrast(1.05)", tint: "rgba(255,180,220,0.12)" },
-  { id: "vivid",  name: "Vivid",   css: "saturate(1.55) contrast(1.12)", tint: null },
-  { id: "cool",   name: "Sejuk",   css: "saturate(1.1) hue-rotate(-12deg) brightness(1.05)", tint: "rgba(180,220,255,0.12)" },
-  { id: "frost",  name: "Frost",   css: "saturate(1.05) hue-rotate(-18deg) brightness(1.1) contrast(1.02)", tint: "rgba(200,225,255,0.16)" },
-  { id: "mint",   name: "Mint",    css: "saturate(1.1) hue-rotate(15deg) brightness(1.05)", tint: "rgba(190,235,210,0.14)" },
-  { id: "fade",   name: "Fade",    css: "contrast(0.82) brightness(1.08) saturate(0.82)", tint: "rgba(255,245,235,0.12)" },
-  { id: "film",   name: "Film",    css: "sepia(0.45) contrast(1.1) brightness(0.98) saturate(0.9)", tint: "rgba(235,225,200,0.12)" },
-  { id: "sepia",  name: "Vintage", css: "sepia(0.65) contrast(1.05) brightness(1.02)", tint: "rgba(255,225,190,0.12)" },
-  { id: "mono",   name: "Mono",    css: "grayscale(1) contrast(1.05)", tint: null },
-  { id: "noir",   name: "Noir",    css: "grayscale(1) contrast(1.28) brightness(0.95)", tint: null },
+  { id: "soft",   name: "Soft",    css: "brightness(1.12) contrast(0.9) saturate(1.2)", tint: "rgba(255,175,205,0.26)" },
+  { id: "dreamy", name: "Dreamy",  css: "brightness(1.22) contrast(0.8) saturate(1.25) blur(0.3px)", tint: "rgba(255,205,230,0.30)" },
+  { id: "rose",   name: "Rosé",    css: "saturate(1.35) brightness(1.05) contrast(1.05)", tint: "rgba(255,105,160,0.28)" },
+  { id: "blush",  name: "Blush",   css: "saturate(1.25) brightness(1.03) contrast(1.05)", tint: "rgba(255,80,140,0.30)" },
+  { id: "peach",  name: "Peach",   css: "sepia(0.4) saturate(1.6) brightness(1.08)", tint: "rgba(255,160,100,0.28)" },
+  { id: "golden", name: "Golden",  css: "sepia(0.65) saturate(1.5) brightness(1.1) contrast(1.05)", tint: "rgba(255,175,70,0.30)" },
+  { id: "warm",   name: "Hangat",  css: "sepia(0.35) saturate(1.5) brightness(1.06)", tint: "rgba(255,180,120,0.24)" },
+  { id: "candy",  name: "Candy",   css: "saturate(2) contrast(1.18) brightness(1.06)", tint: "rgba(255,120,195,0.22)" },
+  { id: "vivid",  name: "Vivid",   css: "saturate(2) contrast(1.25) brightness(1.02)", tint: null },
+  { id: "cool",   name: "Sejuk",   css: "saturate(1.25) hue-rotate(-25deg) brightness(1.05)", tint: "rgba(110,175,255,0.26)" },
+  { id: "frost",  name: "Frost",   css: "saturate(0.85) hue-rotate(-32deg) brightness(1.18) contrast(1.08)", tint: "rgba(165,205,255,0.32)" },
+  { id: "mint",   name: "Mint",    css: "saturate(1.35) hue-rotate(28deg) brightness(1.05)", tint: "rgba(130,230,185,0.28)" },
+  { id: "fade",   name: "Fade",    css: "contrast(0.7) brightness(1.14) saturate(0.68)", tint: "rgba(255,245,235,0.22)" },
+  { id: "film",   name: "Film",    css: "sepia(0.55) contrast(1.22) brightness(0.95) saturate(1)", tint: "rgba(230,215,180,0.24)" },
+  { id: "sepia",  name: "Vintage", css: "sepia(0.95) contrast(1.15) brightness(1.02)", tint: "rgba(255,210,150,0.22)" },
+  { id: "mono",   name: "Mono",    css: "grayscale(1) contrast(1.15)", tint: null },
+  { id: "noir",   name: "Noir",    css: "grayscale(1) contrast(1.55) brightness(0.88)", tint: null },
 ];
 let currentFilter = FILTERS[1];
 
 // ---------------- Tema frame ----------------
 const THEMES = [
-  { id: "strawberry", name: "🍓 Strawberry", title: "strawberry kiss",
+  { id: "strawberry", name: "🍓 Strawberry", title: "strawberry kiss", quote: "semanis stroberi, selembut cinta",
     bg: ["#ffe7f1", "#ffd0e4"], dot: "rgba(255,150,190,0.30)", accent: "#ff5c92", photoBorder: "#ffb3cd", footer: "#ff6f9e",
     stickers: ["🍓", "🌸", "💗", "🎀", "🍰"] },
-  { id: "sky", name: "☁️ Sky", title: "dreamy sky",
+  { id: "sky", name: "☁️ Sky", title: "dreamy sky", quote: "seluas langit, selembut awan",
     bg: ["#e6f1ff", "#d4e6ff"], dot: "rgba(130,180,255,0.25)", accent: "#4f86d6", photoBorder: "#bcd8ff", footer: "#5b8fd6",
     stickers: ["☁️", "⭐", "🌙", "💙", "🕊️"] },
-  { id: "matcha", name: "🍵 Matcha", title: "fresh matcha",
+  { id: "matcha", name: "🍵 Matcha", title: "fresh matcha", quote: "setenang pagi yang hijau",
     bg: ["#e9f7ee", "#d5efd9"], dot: "rgba(120,200,150,0.25)", accent: "#4faa6d", photoBorder: "#bfe6c8", footer: "#5fa876",
     stickers: ["🍃", "🌿", "⭐", "🍵", "💚"] },
-  { id: "bear", name: "🧸 Honey Bear", title: "honey bear",
+  { id: "bear", name: "🧸 Honey Bear", title: "honey bear", quote: "sehangat pelukan di pagi hari",
     bg: ["#fff3e2", "#ffe7cc"], dot: "rgba(230,180,120,0.28)", accent: "#c68a4a", photoBorder: "#ffd9a8", footer: "#bd8a55",
     stickers: ["🧸", "🍯", "🐾", "⭐", "🌻"] },
-  { id: "y2k", name: "✨ Y2K", title: "cyber cutie",
+  { id: "y2k", name: "✨ Y2K", title: "cyber cutie", quote: "main karakter, selalu",
     bg: ["#ffd1e8", "#c9b6f5", "#b6d8ff"], dot: "rgba(255,255,255,0.45)", accent: "#8a5bd6", photoBorder: "#ffffff", footer: "#9a5bd6",
     stickers: ["✨", "💿", "🦋", "💖", "🌟"] },
-  { id: "sakura", name: "🌸 Sakura", title: "sakura dream",
+  { id: "sakura", name: "🌸 Sakura", title: "sakura dream", quote: "mekar indah sekali seumur hidup",
     bg: ["#fff0f5", "#ffdce8"], dot: "rgba(255,170,200,0.28)", accent: "#e86b96", photoBorder: "#ffc4d8", footer: "#e07090",
     stickers: ["🌸", "🌷", "🦋", "💮", "🏵️"] },
-  { id: "galaxy", name: "🌙 Galaxy", title: "starry night",
+  { id: "galaxy", name: "🌙 Galaxy", title: "starry night", quote: "kamu, bintang paling terang", isDark: true,
     bg: ["#3a2b63", "#5a4a8a", "#2d2450"], dot: "rgba(255,255,255,0.35)", accent: "#e9dcff", photoBorder: "#c9b6f5", footer: "#8a6fc9",
     stickers: ["🌙", "⭐", "✨", "🪐", "💫"] },
-  { id: "peachy", name: "🍑 Peachy", title: "peachy sunset",
+  { id: "peachy", name: "🍑 Peachy", title: "peachy sunset", quote: "semanis langit senja",
     bg: ["#ffe9d6", "#ffd0b0", "#ffb8d0"], dot: "rgba(255,170,120,0.26)", accent: "#e8784f", photoBorder: "#ffc9a8", footer: "#e0824f",
     stickers: ["🍑", "🌅", "🧡", "⭐", "🌻"] },
-  { id: "blueberry", name: "🫐 Blueberry", title: "blueberry pop",
+  { id: "blueberry", name: "🫐 Blueberry", title: "blueberry pop", quote: "kecil, tapi berkesan",
     bg: ["#e4e3ff", "#cdd4ff"], dot: "rgba(150,160,255,0.24)", accent: "#6a66d6", photoBorder: "#c2c6ff", footer: "#7068d0",
     stickers: ["🫐", "💜", "⭐", "🌀", "💙"] },
-  { id: "noir", name: "🖤 Noir", title: "mon chéri",
+  { id: "noir", name: "🖤 Noir", title: "mon chéri", quote: "classic never fades",
     bg: ["#f4f1f2", "#e7e1e4"], dot: "rgba(70,60,66,0.14)", accent: "#3a2f34", photoBorder: "#4a3f44", footer: "#5a4f54",
     stickers: ["🖤", "✦", "♡", "✧", "☕"] },
-  { id: "lemon", name: "🍋 Lemon", title: "lemon soda",
+  { id: "lemon", name: "🍋 Lemon", title: "lemon soda", quote: "secerah pagi musim panas",
     bg: ["#fff6d6", "#ffeeb0"], dot: "rgba(240,200,80,0.26)", accent: "#d9a400", photoBorder: "#ffe08a", footer: "#c99a2f",
     stickers: ["🍋", "🌼", "⭐", "🐝", "🌟"] },
-  { id: "ocean", name: "🌊 Ocean", title: "ocean breeze",
+  { id: "ocean", name: "🌊 Ocean", title: "ocean breeze", quote: "setenang debur ombak",
     bg: ["#d6f3f5", "#bfe6ff"], dot: "rgba(90,190,210,0.24)", accent: "#2f93b0", photoBorder: "#bfe6f0", footer: "#3f9fb5",
     stickers: ["🌊", "🐚", "⭐", "🐬", "💧"] },
-  { id: "cocoa", name: "🍫 Cocoa", title: "sweet cocoa",
+  { id: "cocoa", name: "🍫 Cocoa", title: "sweet cocoa", quote: "hangat, manis, dan nyaman",
     bg: ["#efe1d6", "#e3cdb8"], dot: "rgba(150,110,80,0.20)", accent: "#8a5a3a", photoBorder: "#d8b89a", footer: "#9a6a4a",
     stickers: ["🍫", "☕", "🧸", "🍪", "⭐"] },
-  { id: "lavender", name: "💜 Lavender", title: "lavender haze",
+  { id: "lavender", name: "💜 Lavender", title: "lavender haze", quote: "menenangkan seperti senja ungu",
     bg: ["#f0e6ff", "#e2d2ff"], dot: "rgba(170,130,230,0.22)", accent: "#8a5bd6", photoBorder: "#d8c4f5", footer: "#8f66c9",
     stickers: ["💜", "🪻", "⭐", "🦋", "✨"] },
-  { id: "rainbow", name: "🌈 Rainbow", title: "over the rainbow",
+  { id: "rainbow", name: "🌈 Rainbow", title: "over the rainbow", quote: "setelah hujan, selalu ada warna",
     bg: ["#ffd6e8", "#fff0c2", "#d6f5e0", "#d6e8ff"], dot: "rgba(255,255,255,0.4)", accent: "#ff7fa8", photoBorder: "#ffffff", footer: "#9a7fd6",
     stickers: ["🌈", "⭐", "💗", "✨", "🍬"] },
 ];
@@ -197,9 +197,10 @@ async function startSequence() {
   if (busy || !stream) return;
   busy = true; $("snapBtn").disabled = true; $("flipBtn").disabled = true;
   const total = parseInt($("shotCount").value, 10);
+  const secs = parseInt($("timer").value, 10) || 3;
   shots = []; buildDots(total);
   for (let i = 0; i < total; i++) {
-    await countdownOnce(3);
+    await countdownOnce(secs);
     const fl = $("flash"); fl.classList.remove("go"); void fl.offsetWidth; fl.classList.add("go");
     shots.push(snapOnce()); markDot(i);
     await new Promise((r) => setTimeout(r, 700));
@@ -221,96 +222,145 @@ function mulberry32(a) {
 }
 
 // ---------------- Susun strip ----------------
+function currentCols() { return parseInt($("layout").value, 10) === 2 ? 2 : 1; }
+
 function composeStrip(sources) {
   const n = sources.length;
-  const PW = 620, PH = Math.round(PW * 3 / 4);
-  const sidePad = 46, gap = 54, top = 170, bottom = 180;
-  const W = PW + sidePad * 2;
-  const H = top + n * PH + (n - 1) * gap + bottom;
   const th = currentTheme;
+  const dark = !!th.isDark;
+  const cs = th.stickers;
+  const cols = currentCols();
+  const rows = Math.ceil(n / cols);
+
+  const photoW = cols === 1 ? 640 : 384;
+  const photoH = Math.round(photoW * 3 / 4);
+  const sidePad = 50, gapX = 34, gapY = 46, top = 186, bottom = 206;
+  const W = cols * photoW + (cols - 1) * gapX + sidePad * 2;
+  const H = top + rows * photoH + (rows - 1) * gapY + bottom;
 
   const c = $("stripCanvas");
   c.width = W; c.height = H;
   const ctx = c.getContext("2d");
 
-  // latar gradasi
+  // --- latar gradasi ---
   const grad = ctx.createLinearGradient(0, 0, W, H);
   th.bg.forEach((col, i) => grad.addColorStop(i / (th.bg.length - 1), col));
   ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
 
-  // polkadot
+  // --- motif polkadot halus ---
   ctx.fillStyle = th.dot;
-  for (let y = 30; y < H; y += 46) {
-    for (let x = (y % 92 === 0 ? 30 : 53); x < W; x += 46) {
-      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+  for (let y = 40; y < H; y += 52) {
+    for (let x = ((Math.round(y / 52) % 2) ? 40 : 66); x < W; x += 52) {
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
     }
   }
 
-  // confetti stiker
-  const rnd = mulberry32(99);
-  ctx.globalAlpha = 0.5;
-  for (let i = 0; i < 26; i++) {
-    const s = th.stickers[Math.floor(rnd() * th.stickers.length)];
-    const size = 20 + rnd() * 18;
-    ctx.font = size + "px serif"; ctx.textAlign = "center";
-    ctx.fillText(s, rnd() * W, top * 0.4 + rnd() * (H - top * 0.4));
+  // --- confetti halus hanya di area foto (kelihatan di sela, bukan di judul/footer) ---
+  const rnd = mulberry32(7);
+  ctx.globalAlpha = 0.5; ctx.textAlign = "center";
+  for (let i = 0; i < 18; i++) {
+    const s = cs[Math.floor(rnd() * cs.length)];
+    ctx.font = (18 + rnd() * 14) + "px serif";
+    ctx.fillText(s, rnd() * W, top + rnd() * (H - bottom - top));
   }
   ctx.globalAlpha = 1;
 
-  // border dalam putus-putus
-  ctx.strokeStyle = "rgba(255,255,255,0.9)";
-  ctx.lineWidth = 3; ctx.setLineDash([10, 9]);
-  roundRect(ctx, 16, 16, W - 32, H - 32, 22); ctx.stroke();
+  // --- bingkai bermat (double border) ---
+  ctx.strokeStyle = dark ? "rgba(255,255,255,0.5)" : hexA(th.footer, 0.5);
+  ctx.lineWidth = 5; roundRect(ctx, 14, 14, W - 28, H - 28, 26); ctx.stroke();
+  ctx.strokeStyle = "rgba(255,255,255,0.85)"; ctx.lineWidth = 2.5; ctx.setLineDash([9, 8]);
+  roundRect(ctx, 26, 26, W - 52, H - 52, 20); ctx.stroke();
   ctx.setLineDash([]);
 
-  // judul (tulisan sambung)
-  ctx.textAlign = "center";
+  // --- ornamen 4 sudut ---
+  ctx.font = "32px serif"; ctx.textAlign = "center";
+  ctx.fillText(cs[0], 54, 64); ctx.fillText(cs[1], W - 54, 64);
+  ctx.fillText(cs[2], 54, H - 40); ctx.fillText(cs[3], W - 54, H - 40);
+
+  // --- judul (tulisan sambung) ---
   ctx.fillStyle = th.accent;
-  ctx.font = "400 86px 'Great Vibes', cursive";
-  ctx.fillText(th.title, W / 2, 104);
-  ctx.font = "30px serif";
-  ctx.fillText(th.stickers[0] + "  ♡  " + th.stickers[1], W / 2, 144);
+  ctx.font = "400 92px 'Great Vibes', cursive";
+  ctx.fillText(th.title, W / 2, 116);
+  ctx.font = "30px serif"; ctx.fillStyle = dark ? "#fff" : th.footer;
+  ctx.fillText(cs[0] + "  ♡  " + cs[1], W / 2, 158);
 
-  // foto + hiasan
+  // --- foto-foto (grid) ---
   sources.forEach((src, i) => {
-    const y = top + i * (PH + gap);
+    const r = Math.floor(i / cols), ci = i % cols;
+    const x = sidePad + ci * (photoW + gapX);
+    const y = top + r * (photoH + gapY);
+
+    // kartu putih + bayangan
     ctx.save();
-    ctx.shadowColor = "rgba(0,0,0,0.14)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6;
-    roundRect(ctx, sidePad, y, PW, PH, 18); ctx.fillStyle = "#fff"; ctx.fill();
+    ctx.shadowColor = "rgba(0,0,0,0.16)"; ctx.shadowBlur = 16; ctx.shadowOffsetY = 7;
+    roundRect(ctx, x, y, photoW, photoH, 16); ctx.fillStyle = "#fff"; ctx.fill();
     ctx.restore();
 
+    // border warna tema
     ctx.save();
-    roundRect(ctx, sidePad + 4, y + 4, PW - 8, PH - 8, 15);
-    ctx.strokeStyle = th.photoBorder; ctx.lineWidth = 6; ctx.stroke();
-    roundRect(ctx, sidePad + 9, y + 9, PW - 18, PH - 18, 12); ctx.clip();
-    coverDraw(ctx, src, sidePad + 9, y + 9, PW - 18, PH - 18);
+    roundRect(ctx, x + 3, y + 3, photoW - 6, photoH - 6, 14);
+    ctx.strokeStyle = th.photoBorder; ctx.lineWidth = 7; ctx.stroke();
+    roundRect(ctx, x + 10, y + 10, photoW - 20, photoH - 20, 10); ctx.clip();
+    coverDraw(ctx, src, x + 10, y + 10, photoW - 20, photoH - 20);
     ctx.restore();
 
-    ctx.font = "40px serif"; ctx.textAlign = "center";
-    rotatedSticker(ctx, th.stickers[(i + 1) % th.stickers.length], sidePad + PW - 18, y + 22, -0.25);
-    rotatedSticker(ctx, th.stickers[(i + 3) % th.stickers.length], sidePad + 22, y + PH - 16, 0.2);
+    // garis dalam putih tipis
+    ctx.save();
+    roundRect(ctx, x + 10, y + 10, photoW - 20, photoH - 20, 10);
+    ctx.strokeStyle = "rgba(255,255,255,0.8)"; ctx.lineWidth = 2; ctx.stroke();
+    ctx.restore();
 
-    if (i < n - 1) {
-      const gy = y + PH + gap / 2 + 6;
-      ctx.font = "30px serif";
-      const row = [th.stickers[i % th.stickers.length], "✧", th.stickers[(i + 2) % th.stickers.length]];
-      row.forEach((s, j) => ctx.fillText(s, W / 2 + (j - 1) * 54, gy));
-    }
+    // selotip washi di dua sudut atas
+    washiTape(ctx, x + 40, y - 2, hexA(th.accent, 0.42), -0.35);
+    washiTape(ctx, x + photoW - 40, y - 2, hexA(th.accent, 0.42), 0.35);
+
+    // satu stiker kecil di pojok bawah foto
+    ctx.font = "32px serif"; ctx.textAlign = "center";
+    rotatedSticker(ctx, cs[(i + 1) % cs.length], x + photoW - 24, y + photoH - 16, 0.15);
   });
 
-  // footer
+  // ---- footer menyesuaikan tema ----
   const d = new Date();
   const tgl = d.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
-  const by = H - bottom + 54;
-  ctx.save();
-  ctx.shadowColor = "rgba(0,0,0,0.1)"; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
-  const pillW = 320, pillH = 56;
-  roundRect(ctx, (W - pillW) / 2, by - 40, pillW, pillH, 28);
-  ctx.fillStyle = "#fff"; ctx.fill(); ctx.restore();
-  ctx.fillStyle = th.footer; ctx.font = "700 30px 'Quicksand', sans-serif"; ctx.textAlign = "center";
-  ctx.fillText("📅 " + tgl, W / 2, by - 2);
+  const fy = H - bottom;
+  ctx.textAlign = "center";
+
+  // pembatas hiasan
+  const dy = fy + 32;
+  ctx.strokeStyle = th.dot; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W / 2 - 170, dy); ctx.lineTo(W / 2 - 70, dy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W / 2 + 70, dy); ctx.lineTo(W / 2 + 170, dy); ctx.stroke();
+  ctx.font = "26px serif"; ctx.fillStyle = dark ? "#fff" : th.footer;
+  ctx.fillText(cs[1] + " " + cs[0] + " " + cs[2], W / 2, dy + 9);
+
+  // pil tanggal transparan bernuansa tema
+  const by = fy + 104, pillW = Math.min(400, W - 90), pillH = 58;
+  ctx.fillStyle = dark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.6)";
+  roundRect(ctx, (W - pillW) / 2, by - 42, pillW, pillH, 29); ctx.fill();
+  ctx.strokeStyle = dark ? "rgba(255,255,255,0.35)" : hexA(th.footer, 0.45);
+  ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = dark ? "#ffffff" : th.footer;
+  ctx.font = "700 30px 'Quicksand', sans-serif";
+  ctx.fillText(cs[3] + "   " + tgl + "   " + cs[4], W / 2, by - 2);
+
+  // quote tulisan sambung
   ctx.font = "700 48px 'Dancing Script', cursive"; ctx.fillStyle = th.accent;
-  ctx.fillText("sweet little moment " + th.stickers[0], W / 2, by + 62);
+  ctx.fillText(th.quote, W / 2, by + 62);
+}
+
+function washiTape(ctx, cx, cy, color, rot) {
+  ctx.save();
+  ctx.translate(cx, cy); ctx.rotate(rot);
+  ctx.fillStyle = color;
+  ctx.fillRect(-42, -13, 84, 26);
+  ctx.restore();
+}
+
+function hexA(hex, a) {
+  const m = hex.replace("#", "");
+  const n = m.length === 3 ? m.split("").map((x) => x + x).join("") : m;
+  const r = parseInt(n.slice(0, 2), 16), g = parseInt(n.slice(2, 4), 16), b = parseInt(n.slice(4, 6), 16);
+  return "rgba(" + r + "," + g + "," + b + "," + a + ")";
 }
 
 function rotatedSticker(ctx, s, x, y, rot) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillText(s, 0, 0); ctx.restore(); }

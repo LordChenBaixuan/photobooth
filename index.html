@@ -42,11 +42,32 @@
         <div class="chip-row" id="themes"></div>
 
         <div class="row">
+          <label class="count">Tata letak:
+            <select id="layout">
+              <option value="1" selected>Strip (1 kolom)</option>
+              <option value="2">Grid (2 kolom)</option>
+            </select>
+          </label>
           <label class="count">Jumlah foto:
             <select id="shotCount">
+              <option value="2">2</option>
               <option value="3" selected>3</option>
               <option value="4">4</option>
-              <option value="2">2</option>
+              <option value="6">6</option>
+            </select>
+          </label>
+          <label class="count">Timer:
+            <select id="timer">
+              <option value="1">1 dtk</option>
+              <option value="2">2 dtk</option>
+              <option value="3" selected>3 dtk</option>
+              <option value="4">4 dtk</option>
+              <option value="5">5 dtk</option>
+              <option value="6">6 dtk</option>
+              <option value="7">7 dtk</option>
+              <option value="8">8 dtk</option>
+              <option value="9">9 dtk</option>
+              <option value="10">10 dtk</option>
             </select>
           </label>
         </div>
@@ -55,7 +76,7 @@
           <button class="btn full" id="startBtn">✦ Nyalakan Kamera</button>
           <button class="btn full" id="snapBtn" style="display:none">✿ Mulai Jepret</button>
           <button class="btn ghost" id="flipBtn" style="display:none">⟳ Balik Kamera</button>
-          <div class="tiny" id="hint">selamat mencoba~</div>
+          <div class="tiny" id="hint">Selamat mencoba~</div>
         </div>
       </div>
 

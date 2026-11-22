@@ -44,6 +44,15 @@
         </div>
 
         <div class="row">
+          <label class="count">Bentuk
+            <select id="shape">
+              <option value="rect" selected>Kotak</option>
+              <option value="rounded">Membulat</option>
+              <option value="arch">Lengkung</option>
+              <option value="oval">Oval</option>
+              <option value="circle">Lingkaran</option>
+            </select>
+          </label>
           <label class="count">Tata letak
             <select id="layout">
               <option value="1" selected>Strip</option>
@@ -78,7 +87,7 @@
           <button class="btn full" id="startBtn">Nyalakan Kamera</button>
           <button class="btn full" id="snapBtn" style="display:none">Mulai Jepret</button>
           <button class="btn ghost" id="flipBtn" style="display:none">Balik Kamera</button>
-          <div class="tiny" id="hint"></div>
+          <div class="tiny" id="hint">Kamera hanya jalan di HTTPS atau localhost.</div>
         </div>
       </div>
 

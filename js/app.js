@@ -7,6 +7,11 @@
 // ---------------- Filter ----------------
 const FILTERS = [
   { id: "normal", name: "Asli",    css: "none", tint: null },
+  // ✨ filter wajah: menghaluskan kulit & menyamarkan flek
+  { id: "mulus",  name: "Mulus ✨", css: "brightness(1.08) contrast(0.94) saturate(1.05)", tint: "rgba(255,228,220,0.12)",
+    preview: "blur(0.6px) brightness(1.09) contrast(0.95) saturate(1.05)", beauty: true, smooth: 0.5, blur: 5 },
+  { id: "glow",   name: "Glow ✨", css: "brightness(1.16) contrast(0.9) saturate(1.1)", tint: "rgba(255,218,224,0.16)",
+    preview: "blur(0.7px) brightness(1.17) contrast(0.9) saturate(1.1)", beauty: true, smooth: 0.6, blur: 7 },
   // pastel bersih, pink lembut, kontras normal
   { id: "soft",   name: "Soft",    css: "brightness(1.08) contrast(1.0) saturate(1.12)", tint: "rgba(255,200,215,0.16)" },
   // berkabut & melamun: blur + kontras rendah + semburat ungu
@@ -143,12 +148,13 @@ let busy = false;
       currentTheme = t;
       document.querySelectorAll("#themes .chip").forEach((x) => x.classList.remove("active"));
       c.classList.add("active");
+      renderFramePreview();
     };
     tWrap.appendChild(c);
   });
 })();
 
-function applyPreviewFilter() { video.style.filter = currentFilter.css; }
+function applyPreviewFilter() { video.style.filter = currentFilter.preview || currentFilter.css; }
 
 // ---------------- Kamera ----------------
 async function startCamera() {
@@ -191,6 +197,20 @@ function snapOnce() {
   ctx.drawImage(video, 0, 0, w, h);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.filter = "none";
+
+  // filter wajah: tumpuk lapisan buram lembut untuk menghaluskan kulit & flek
+  if (currentFilter.beauty) {
+    const tmp = document.createElement("canvas");
+    tmp.width = w; tmp.height = h;
+    tmp.getContext("2d").drawImage(c, 0, 0);
+    ctx.save();
+    ctx.globalAlpha = currentFilter.smooth || 0.55;
+    ctx.filter = "blur(" + Math.max(3, Math.round(w / 220) + (currentFilter.blur || 5) - 5) + "px)";
+    ctx.drawImage(tmp, 0, 0, w, h);
+    ctx.restore();
+    ctx.filter = "none";
+  }
+
   if (currentFilter.tint) { ctx.fillStyle = currentFilter.tint; ctx.fillRect(0, 0, w, h); }
   return c;
 }
@@ -239,7 +259,7 @@ function mulberry32(a) {
 // ---------------- Susun strip ----------------
 function currentCols() { return parseInt($("layout").value, 10) === 2 ? 2 : 1; }
 
-function composeStrip(sources) {
+function composeStrip(sources, canvasEl) {
   const n = sources.length;
   const th = currentTheme;
   const dark = !!th.isDark;
@@ -249,11 +269,11 @@ function composeStrip(sources) {
 
   const photoW = cols === 1 ? 640 : 384;
   const photoH = Math.round(photoW * 3 / 4);
-  const sidePad = 50, gapX = 34, gapY = 46, top = 186, bottom = 206;
+  const sidePad = 54, gapX = 34, gapY = 46, top = 186, bottom = 150;
   const W = cols * photoW + (cols - 1) * gapX + sidePad * 2;
   const H = top + rows * photoH + (rows - 1) * gapY + bottom;
 
-  const c = $("stripCanvas");
+  const c = canvasEl || $("stripCanvas");
   c.width = W; c.height = H;
   const ctx = c.getContext("2d");
 
@@ -274,11 +294,14 @@ function composeStrip(sources) {
   vig.addColorStop(1, dark ? "rgba(0,0,0,0.18)" : "rgba(120,80,100,0.08)");
   ctx.fillStyle = vig; ctx.fillRect(0, 0, W, H);
 
-  // --- motif polkadot halus ---
-  ctx.fillStyle = th.dot;
-  for (let y = 40; y < H; y += 52) {
-    for (let x = ((Math.round(y / 52) % 2) ? 40 : 66); x < W; x += 52) {
-      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+  // --- motif polkadot dua warna (tema + putih) ---
+  for (let y = 38; y < H; y += 48) {
+    const stagger = (Math.round(y / 48) % 2) ? 38 : 62;
+    for (let x = stagger; x < W; x += 48) {
+      ctx.fillStyle = th.dot;
+      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.45)";
+      ctx.beginPath(); ctx.arc(x + 24, y + 24, 2.5, 0, Math.PI * 2); ctx.fill();
     }
   }
 
@@ -298,6 +321,17 @@ function composeStrip(sources) {
   ctx.strokeStyle = "rgba(255,255,255,0.85)"; ctx.lineWidth = 2.5; ctx.setLineDash([9, 8]);
   roundRect(ctx, 26, 26, W - 52, H - 52, 20); ctx.stroke();
   ctx.setLineDash([]);
+
+  // --- cincin polkadot sebagai bingkai hias ---
+  const ringC = dark ? "rgba(255,255,255,0.55)" : hexA(th.footer, 0.5);
+  const ringW2 = dark ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.8)";
+  const rp = 40, step = 34;
+  function pdot(x, y) {
+    ctx.fillStyle = ringC; ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = ringW2; ctx.beginPath(); ctx.arc(x - 1.5, y - 1.5, 1.6, 0, Math.PI * 2); ctx.fill();
+  }
+  for (let x = rp; x <= W - rp; x += step) { pdot(x, rp); pdot(x, H - rp); }
+  for (let y = rp + step; y <= H - rp - step; y += step) { pdot(rp, y); pdot(W - rp, y); }
 
   // --- ornamen 4 sudut (stiker + aksen kecil) ---
   ctx.textAlign = "center";
@@ -354,33 +388,51 @@ function composeStrip(sources) {
     rotatedSticker(ctx, cs[(i + 1) % cs.length], x + photoW - 24, y + photoH - 16, 0.15);
   });
 
-  // ---- footer menyesuaikan tema ----
-  const d = new Date();
-  const tgl = d.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+  // ---- footer menyesuaikan tema (tanpa tanggal) ----
   const fy = H - bottom;
   ctx.textAlign = "center";
 
-  // pembatas hiasan
-  const dy = fy + 32;
+  // pembatas hiasan: garis + trio stiker
+  const dy = fy + 44;
   ctx.strokeStyle = th.dot; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(W / 2 - 170, dy); ctx.lineTo(W / 2 - 70, dy); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(W / 2 + 70, dy); ctx.lineTo(W / 2 + 170, dy); ctx.stroke();
-  ctx.font = "26px serif"; ctx.fillStyle = dark ? "#fff" : th.footer;
-  ctx.fillText(cs[1] + " " + cs[0] + " " + cs[2], W / 2, dy + 9);
-
-  // pil tanggal transparan bernuansa tema
-  const by = fy + 104, pillW = Math.min(400, W - 90), pillH = 58;
-  ctx.fillStyle = dark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.6)";
-  roundRect(ctx, (W - pillW) / 2, by - 42, pillW, pillH, 29); ctx.fill();
-  ctx.strokeStyle = dark ? "rgba(255,255,255,0.35)" : hexA(th.footer, 0.45);
-  ctx.lineWidth = 2; ctx.stroke();
-  ctx.fillStyle = dark ? "#ffffff" : th.footer;
-  ctx.font = "700 30px 'Quicksand', sans-serif";
-  ctx.fillText(cs[3] + "   " + tgl + "   " + cs[4], W / 2, by - 2);
+  ctx.font = "28px serif"; ctx.fillStyle = dark ? "#fff" : th.footer;
+  ctx.fillText(cs[3] + " " + cs[0] + " " + cs[4], W / 2, dy + 10);
 
   // quote tulisan sambung
-  ctx.font = "700 48px 'Dancing Script', cursive"; ctx.fillStyle = th.accent;
-  ctx.fillText(th.quote, W / 2, by + 62);
+  ctx.save();
+  ctx.shadowColor = dark ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.85)";
+  ctx.shadowBlur = 5; ctx.shadowOffsetY = 1;
+  ctx.font = "700 52px 'Dancing Script', cursive"; ctx.fillStyle = th.accent;
+  ctx.fillText(th.quote, W / 2, fy + 112);
+  ctx.restore();
+}
+
+// ---------------- Preview frame ----------------
+function placeholderPhoto() {
+  const w = 800, h = 600;
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const x = cv.getContext("2d");
+  const g = x.createLinearGradient(0, 0, 0, h);
+  g.addColorStop(0, "#dcdce4"); g.addColorStop(1, "#c3c3cf");
+  x.fillStyle = g; x.fillRect(0, 0, w, h);
+  // siluet orang biar kebayang foto
+  x.fillStyle = "rgba(255,255,255,0.55)";
+  x.beginPath(); x.arc(w / 2, h * 0.42, h * 0.2, 0, Math.PI * 2); x.fill();
+  x.beginPath(); x.moveTo(w / 2 - h * 0.32, h);
+  x.quadraticCurveTo(w / 2, h * 0.56, w / 2 + h * 0.32, h); x.closePath(); x.fill();
+  return cv;
+}
+
+function renderFramePreview() {
+  const pv = $("framePreview");
+  if (!pv) return;
+  const nn = currentCols() === 2 ? 2 : 2;
+  const arr = []; for (let i = 0; i < nn; i++) arr.push(placeholderPhoto());
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => composeStrip(arr, pv)).catch(() => composeStrip(arr, pv));
+  } else { composeStrip(arr, pv); }
 }
 
 function washiTape(ctx, cx, cy, color, rot) {
@@ -427,6 +479,11 @@ $("downloadBtn").onclick = () => {
   a.href = $("stripCanvas").toDataURL("image/png"); a.click();
 };
 
+// preview ikut berubah saat tata letak diganti
+$("layout").addEventListener("change", renderFramePreview);
+// render preview awal
+renderFramePreview();
+
 // hook pengujian
 window.__composeStrip = composeStrip;
-window.__setTheme = (i) => { currentTheme = THEMES[i]; };
+window.__setTheme = (i) => { currentTheme = THEMES[i]; renderFramePreview(); };

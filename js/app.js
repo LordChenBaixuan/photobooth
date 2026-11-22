@@ -4,6 +4,9 @@
    Vintage Photobooth — logic
    ============================================================ */
 
+// Ganti nama yang tampil di atas tiap frame di sini:
+const BRAND = "Photobooth";
+
 // ---------------- Filter ----------------
 const FILTERS = [
   { id: "normal", name: "Asli",    css: "none", tint: null },
@@ -199,59 +202,78 @@ function mulberry32(a) {
   };
 }
 
-// ---------------- Pattern tiap frame ----------------
+// ---------------- Pattern tiap frame (diperhalus) ----------------
 const PATTERNS = {
   grid(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 1;
-    for (let x = 0; x <= W; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-    for (let y = 0; y <= H; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 0.8;
+    for (let x = 0; x <= W; x += 20) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y <= H; y += 20) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+    ctx.lineWidth = 1.8; // garis mayor
+    for (let x = 0; x <= W; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y <= H; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
   },
   stripes(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 11;
-    for (let d = -H; d < W; d += 32) { ctx.beginPath(); ctx.moveTo(d, 0); ctx.lineTo(d + H, H); ctx.stroke(); }
+    ctx.strokeStyle = col;
+    for (let d = -H; d < W; d += 26) {
+      ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(d, 0); ctx.lineTo(d + H, H); ctx.stroke();
+      ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(d + 10, 0); ctx.lineTo(d + 10 + H, H); ctx.stroke();
+    }
   },
   dots(ctx, W, H, col) {
     ctx.fillStyle = col;
-    for (let y = 18; y < H; y += 30) {
-      for (let x = ((Math.round(y / 30) % 2) ? 18 : 33); x < W; x += 30) {
-        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+    for (let y = 16; y < H; y += 26) {
+      for (let x = ((Math.round(y / 26) % 2) ? 16 : 29); x < W; x += 26) {
+        ctx.beginPath(); ctx.arc(x, y, 3.6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x + 13, y + 13, 1.4, 0, Math.PI * 2); ctx.fill();
       }
     }
   },
   checks(ctx, W, H, col) {
-    ctx.fillStyle = col; const s = 40;
+    const s = 44; ctx.fillStyle = col;
     for (let r = 0; r * s < H; r++) for (let cc = 0; cc * s < W; cc++) if ((r + cc) % 2 === 0) ctx.fillRect(cc * s, r * s, s, s);
+    ctx.strokeStyle = col; ctx.lineWidth = 0.6;
+    for (let x = 0; x <= W; x += s) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y <= H; y += s) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
   },
   arches(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 6; const s = 66;
-    for (let y = s; y < H + s; y += s) for (let x = 0; x < W + s; x += s) { ctx.beginPath(); ctx.arc(x, y, s / 2, Math.PI, 0); ctx.stroke(); }
+    ctx.strokeStyle = col; const s = 58;
+    for (let y = s; y < H + s; y += s) for (let x = 0; x < W + s; x += s) {
+      ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(x, y, s / 2, Math.PI, 0); ctx.stroke();
+      ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x, y, s / 2 - 9, Math.PI, 0); ctx.stroke();
+    }
   },
   waves(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 4;
-    for (let y = 22; y < H; y += 28) {
+    ctx.strokeStyle = col; ctx.lineWidth = 3;
+    for (let y = 20; y < H; y += 24) {
       ctx.beginPath();
-      for (let x = 0; x <= W; x += 8) { const yy = y + Math.sin(x / 22) * 7; x === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); }
+      for (let x = 0; x <= W; x += 6) { const yy = y + Math.sin(x / 20) * 6; x === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); }
       ctx.stroke();
     }
   },
   terrazzo(ctx, W, H, col) {
     const rnd = mulberry32(5);
-    for (let i = 0; i < 240; i++) {
+    for (let i = 0; i < 260; i++) {
       const x = rnd() * W, y = rnd() * H, r = 2 + rnd() * 5;
-      ctx.globalAlpha = 0.25 + rnd() * 0.3; ctx.fillStyle = col;
+      ctx.globalAlpha = 0.22 + rnd() * 0.32; ctx.fillStyle = col;
       ctx.beginPath();
-      if (rnd() < 0.5) ctx.arc(x, y, r, 0, Math.PI * 2);
-      else { ctx.save(); ctx.translate(x, y); ctx.rotate(rnd() * 6); ctx.rect(-r, -r * 0.7, r * 2, r * 1.4); ctx.restore(); }
+      const t = rnd();
+      if (t < 0.5) ctx.arc(x, y, r, 0, Math.PI * 2);
+      else if (t < 0.8) { ctx.save(); ctx.translate(x, y); ctx.rotate(rnd() * 6); ctx.rect(-r, -r * 0.7, r * 2, r * 1.4); ctx.restore(); }
+      else { ctx.save(); ctx.translate(x, y); ctx.rotate(rnd() * 6); ctx.moveTo(-r, r); ctx.lineTo(0, -r); ctx.lineTo(r, r); ctx.closePath(); ctx.restore(); }
       ctx.fill();
     }
     ctx.globalAlpha = 1;
   },
   scallop(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 3; const s = 42;
-    for (let y = s; y < H + s; y += s / 1.6) for (let x = 0; x < W + s; x += s) { ctx.beginPath(); ctx.arc(x, y, s / 2, Math.PI, 0, true); ctx.stroke(); }
+    ctx.strokeStyle = col; const s = 46;
+    for (let y = s; y < H + s; y += s / 1.7) for (let x = 0; x < W + s; x += s) {
+      ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(x, y, s / 2, Math.PI, 0, true); ctx.stroke();
+      ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, s / 2 - 7, Math.PI, 0, true); ctx.stroke();
+    }
   },
   herringbone(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 5; const s = 26;
+    ctx.strokeStyle = col; ctx.lineWidth = 4; const s = 24;
     for (let y = 0; y < H; y += s) {
       const up = (Math.round(y / s) % 2) === 0;
       for (let x = 0; x < W; x += s * 2) {
@@ -262,14 +284,32 @@ const PATTERNS = {
     }
   },
   ticks(ctx, W, H, col) {
-    ctx.strokeStyle = col; ctx.lineWidth = 2; const s = 42;
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 2; const s = 40;
     for (let y = s; y < H; y += s) for (let x = s; x < W; x += s) {
       ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x + 5, y); ctx.moveTo(x, y - 5); ctx.lineTo(x, y + 5); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x + s / 2, y + s / 2, 1.6, 0, Math.PI * 2); ctx.fill();
     }
   },
 };
 
 function currentCols() { return parseInt($("layout").value, 10) === 2 ? 2 : 1; }
+function currentShape() { const s = $("shape"); return s ? s.value : "rect"; }
+
+// bentuk foto: menyiapkan path sesuai pilihan
+function shapePath(ctx, x, y, w, h, shape) {
+  ctx.beginPath();
+  if (shape === "oval") { ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2); return; }
+  if (shape === "circle") { ctx.arc(x + w / 2, y + h / 2, Math.min(w, h) / 2, 0, Math.PI * 2); return; }
+  if (shape === "arch") {
+    const r = Math.min(w / 2, h * 0.55);
+    ctx.moveTo(x, y + h); ctx.lineTo(x, y + r); ctx.arcTo(x, y, x + r, y, r);
+    ctx.lineTo(x + w - r, y); ctx.arcTo(x + w, y, x + w, y + r, r); ctx.lineTo(x + w, y + h); ctx.closePath(); return;
+  }
+  const rr = shape === "rounded" ? 30 : 6;
+  ctx.moveTo(x + rr, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rr); ctx.arcTo(x + w, y + h, x, y + h, rr);
+  ctx.arcTo(x, y + h, x, y, rr); ctx.arcTo(x, y, x + w, y, rr); ctx.closePath();
+}
 
 // teks dengan jarak huruf (editorial)
 function drawSpaced(ctx, text, cx, y, gap) {
@@ -292,7 +332,8 @@ function composeStrip(sources, canvasEl) {
 
   const photoW = cols === 1 ? 640 : 384;
   const photoH = Math.round(photoW * 3 / 4);
-  const sidePad = 58, gapX = 30, gapY = 36, top = 176, bottom = 140;
+  const shape = currentShape();
+  const sidePad = 58, gapX = 30, gapY = 36, top = 176, bottom = 158;
   const W = cols * photoW + (cols - 1) * gapX + sidePad * 2;
   const H = top + rows * photoH + (rows - 1) * gapY + bottom;
 
@@ -318,10 +359,10 @@ function composeStrip(sources, canvasEl) {
   ctx.strokeStyle = th.line; ctx.lineWidth = 2; roundRect(ctx, 20, 20, W - 40, H - 40, 10); ctx.stroke();
   ctx.lineWidth = 1; roundRect(ctx, 28, 28, W - 56, H - 56, 7); ctx.stroke();
 
-  // judul editorial + rule
+  // nama photobooth di atas + rule
   ctx.fillStyle = th.accent;
-  ctx.font = "700 52px 'Playfair Display', Georgia, serif";
-  drawSpaced(ctx, th.title, W / 2, 90, 7);
+  ctx.font = "700 46px 'Playfair Display', Georgia, serif";
+  drawSpaced(ctx, BRAND.toUpperCase(), W / 2, 90, 6);
   ctx.strokeStyle = th.line; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(W / 2 - 84, 116); ctx.lineTo(W / 2 - 14, 116); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(W / 2 + 14, 116); ctx.lineTo(W / 2 + 84, 116); ctx.stroke();
@@ -335,27 +376,41 @@ function composeStrip(sources, canvasEl) {
 
     ctx.save();
     ctx.shadowColor = "rgba(0,0,0,0.2)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6;
-    ctx.fillStyle = "#fff"; roundRect(ctx, x, y, photoW, photoH, 6); ctx.fill();
+    ctx.fillStyle = "#fff"; shapePath(ctx, x, y, photoW, photoH, shape); ctx.fill();
     ctx.restore();
 
     ctx.save();
-    roundRect(ctx, x + 8, y + 8, photoW - 16, photoH - 16, 4); ctx.clip();
+    shapePath(ctx, x + 8, y + 8, photoW - 16, photoH - 16, shape); ctx.clip();
     coverDraw(ctx, src, x + 8, y + 8, photoW - 16, photoH - 16);
     ctx.restore();
 
     ctx.strokeStyle = th.line; ctx.lineWidth = 1.5;
-    roundRect(ctx, x + 8, y + 8, photoW - 16, photoH - 16, 4); ctx.stroke();
+    shapePath(ctx, x + 8, y + 8, photoW - 16, photoH - 16, shape); ctx.stroke();
   });
 
-  // footer: rule + quote italic (tanpa tanggal/emoji)
+  // footer: tanggal (menyesuaikan warna tema) + quote kecil
+  const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  const dt = new Date();
+  const tgl = dt.getDate() + " " + months[dt.getMonth()].toUpperCase() + " " + dt.getFullYear();
   const fy = H - bottom;
+
+  // rule
   ctx.strokeStyle = th.line; ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(W / 2 - 64, fy + 36); ctx.lineTo(W / 2 - 10, fy + 36); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W / 2 + 10, fy + 36); ctx.lineTo(W / 2 + 64, fy + 36); ctx.stroke();
-  ctx.fillStyle = th.accent; ctx.beginPath(); ctx.arc(W / 2, fy + 36, 3, 0, Math.PI * 2); ctx.fill();
-  ctx.font = "italic 400 34px 'Playfair Display', Georgia, serif";
+  ctx.beginPath(); ctx.moveTo(W / 2 - 70, fy + 34); ctx.lineTo(W / 2 - 12, fy + 34); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W / 2 + 12, fy + 34); ctx.lineTo(W / 2 + 70, fy + 34); ctx.stroke();
+  ctx.fillStyle = th.accent; ctx.beginPath(); ctx.arc(W / 2, fy + 34, 3, 0, Math.PI * 2); ctx.fill();
+
+  // tanggal
+  ctx.fillStyle = th.accent;
+  ctx.font = "500 26px 'Playfair Display', Georgia, serif";
+  drawSpaced(ctx, tgl, W / 2, fy + 78, 3);
+
+  // quote kecil (muted)
+  ctx.fillStyle = dark ? "rgba(255,255,255,0.55)" : "rgba(70,55,45,0.55)";
+  ctx.font = "italic 400 26px 'Playfair Display', Georgia, serif";
   ctx.textAlign = "center";
-  ctx.fillText(th.quote, W / 2, fy + 86);
+  ctx.fillText(th.quote, W / 2, fy + 114);
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -410,6 +465,7 @@ $("downloadBtn").onclick = () => {
   a.href = $("stripCanvas").toDataURL("image/png"); a.click();
 };
 $("layout").addEventListener("change", renderFramePreview);
+$("shape").addEventListener("change", renderFramePreview);
 renderFramePreview();
 
 // hook pengujian

@@ -3,57 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#ffe0ec" />
-  <title>Dreamy Photobooth ♡</title>
+  <meta name="theme-color" content="#efe7d8" />
+  <title>Photobooth</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Quicksand:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="decor" aria-hidden="true"></div>
-
   <header>
-    <h1>Dreamy Photobooth</h1>
-    <p>jepret momen gemasmu, pilih tema, simpan ♡</p>
+    <h1>Photobooth</h1>
+    <p>momen kecil, dibingkai dengan rasa</p>
   </header>
 
   <div class="layout">
-    <!-- KOLOM KIRI: BOOTH -->
     <div class="booth">
       <div id="camView">
         <div class="stage">
           <video id="video" autoplay playsinline muted></video>
-          <div class="stage__msg" id="stageMsg"><span class="big">📸</span>Izinkan kamera untuk mulai</div>
+          <div class="stage__msg" id="stageMsg">Izinkan kamera untuk mulai</div>
           <div class="countdown" id="countdown"><span></span></div>
           <div class="flash" id="flash"></div>
         </div>
 
         <div class="dots" id="dots"></div>
 
-        <div class="label">✨ Filter Foto</div>
+        <div class="label">Filter</div>
         <div class="chip-row" id="filters"></div>
 
-        <div class="label">🎀 Tema Frame</div>
+        <div class="label">Frame</div>
         <div class="chip-row" id="themes"></div>
 
         <div class="preview-wrap">
-          <div class="label" style="margin:10px 0 6px;">👀 Preview Frame</div>
+          <div class="label" style="margin:12px 0 6px;">Preview</div>
           <canvas id="framePreview"></canvas>
         </div>
 
         <div class="row">
-          <label class="count">Tata letak:
+          <label class="count">Tata letak
             <select id="layout">
-              <option value="1" selected>Strip (1 kolom)</option>
-              <option value="2">Grid (2 kolom)</option>
+              <option value="1" selected>Strip</option>
+              <option value="2">Grid</option>
             </select>
           </label>
-          <label class="count">Jumlah foto:
+          <label class="count">Jumlah
             <select id="shotCount">
               <option value="2">2</option>
               <option value="3" selected>3</option>
@@ -61,59 +58,49 @@
               <option value="6">6</option>
             </select>
           </label>
-          <label class="count">Timer:
+          <label class="count">Timer
             <select id="timer">
-              <option value="1">1 dtk</option>
-              <option value="2">2 dtk</option>
-              <option value="3" selected>3 dtk</option>
-              <option value="4">4 dtk</option>
-              <option value="5">5 dtk</option>
-              <option value="6">6 dtk</option>
-              <option value="7">7 dtk</option>
-              <option value="8">8 dtk</option>
-              <option value="9">9 dtk</option>
-              <option value="10">10 dtk</option>
+              <option value="1">1s</option>
+              <option value="2">2s</option>
+              <option value="3" selected>3s</option>
+              <option value="4">4s</option>
+              <option value="5">5s</option>
+              <option value="6">6s</option>
+              <option value="7">7s</option>
+              <option value="8">8s</option>
+              <option value="9">9s</option>
+              <option value="10">10s</option>
             </select>
           </label>
         </div>
 
         <div class="controls">
-          <button class="btn full" id="startBtn">✦ Nyalakan Kamera</button>
-          <button class="btn full" id="snapBtn" style="display:none">✿ Mulai Jepret</button>
-          <button class="btn ghost" id="flipBtn" style="display:none">⟳ Balik Kamera</button>
-          <div class="tiny" id="hint">Selamat Mencoba~</div>
+          <button class="btn full" id="startBtn">Nyalakan Kamera</button>
+          <button class="btn full" id="snapBtn" style="display:none">Mulai Jepret</button>
+          <button class="btn ghost" id="flipBtn" style="display:none">Balik Kamera</button>
+          <div class="tiny" id="hint">Kamera hanya jalan di HTTPS atau localhost.</div>
         </div>
       </div>
 
       <div class="result" id="result">
         <canvas id="stripCanvas"></canvas>
         <div class="row">
-          <button class="btn" id="downloadBtn">⬇ Simpan Foto</button>
-          <button class="btn ghost" id="retakeBtn">↺ Jepret Lagi</button>
+          <button class="btn" id="downloadBtn">Simpan</button>
+          <button class="btn ghost" id="retakeBtn">Ulang</button>
         </div>
       </div>
     </div>
 
-    <!-- KOLOM KANAN: PANDUAN (muncul di layar lebar) -->
     <aside class="aside">
       <h2>Cara Pakai</h2>
-      <div class="step">
-        <div class="num">1</div>
-        <p>Klik <b>Nyalakan Kamera</b> dan izinkan akses kamera.</p>
-      </div>
-      <div class="step">
-        <div class="num">2</div>
-        <p>Pilih <b>filter</b> dan <b>tema frame</b> favoritmu, lalu atur jumlah foto.</p>
-      </div>
-      <div class="step">
-        <div class="num">3</div>
-        <p>Tekan <b>Mulai Jepret</b> — ada hitung mundur tiap foto. Lalu <b>simpan</b> stripnya!</p>
-      </div>
-      <p class="note">🔒 Semua foto diproses di perangkatmu, tidak diunggah ke mana pun.</p>
+      <div class="step"><div class="num">1</div><p>Klik <b>Nyalakan Kamera</b> dan izinkan aksesnya.</p></div>
+      <div class="step"><div class="num">2</div><p>Pilih <b>filter</b> dan <b>frame</b>, atur jumlah & timer.</p></div>
+      <div class="step"><div class="num">3</div><p>Tekan <b>Mulai Jepret</b>, lalu <b>simpan</b> hasilnya.</p></div>
+      <p class="note">Semua foto diproses di perangkatmu, tidak diunggah ke mana pun.</p>
     </aside>
   </div>
 
-  <footer>dibuat dengan <span class="heartbeat">💗</span> · foto tersimpan di perangkatmu</footer>
+  <footer>foto tersimpan di perangkatmu · dibuat untuk momen kecil</footer>
 
   <canvas id="work" style="display:none"></canvas>
   <script src="js/app.js"></script>

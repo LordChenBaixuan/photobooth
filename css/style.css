@@ -148,6 +148,17 @@ header p { font-size: 0.92rem; color: var(--muted); margin-top: 2px; }
 .chip.active { background: var(--pink); color: #fff; border-color: var(--pink); }
 .theme-chip.active { background: var(--pink-deep); border-color: var(--pink-deep); color: #fff; }
 
+/* --- preview frame --- */
+.preview-wrap { display: flex; flex-direction: column; align-items: center; }
+#framePreview {
+  width: auto;
+  max-width: 150px;
+  max-height: 240px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
 /* --- baris jumlah foto + tombol --- */
 .row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; margin-top: 12px; }
 label.count { font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
